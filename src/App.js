@@ -11,6 +11,7 @@ import {
 } from "react-router-dom";
 import Congratulations from "./Congratulations";
 import LoginPage from "./LoginPage";
+import RegisterPage from "./RegisterPage";
 
 const selectedFood = new Map();
 const cartContext = createContext();
@@ -39,6 +40,10 @@ function App() {
               )
             }
           />
+          <Route
+            path="/register"
+            element={<RegisterPage setIsLoggedIn={setIsLoggedIn} />}
+          />
           <Route path="/congrats" element={<Congratulations />} />
           <Route path="/" element={!isLoggedIn && <Navigate to="/login" />} />
           <Route
@@ -62,6 +67,7 @@ function App() {
                   setShowCartItems={setShowCartItems}
                   setIsLoggedIn={setIsLoggedIn}
                 />
+                {/* {!showCartItems && <Meals />} */}
                 <Meals />
               </div>
             }

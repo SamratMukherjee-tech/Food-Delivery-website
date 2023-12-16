@@ -1,17 +1,31 @@
-.cartDisplay {
-  background-color: rgb(247, 218, 163);
-  overflow-y: auto;
-  width: 40%;
+.container {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  margin: auto;
-  z-index: 1000;
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* Adjust the alpha value for the hazy effect */
+  z-index: 1002;
+}
+
+.cartDisplay {
+  background-color: white;
+  overflow-y: auto;
+  width: 30%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
   border-radius: 10px;
   height: 700px;
   color: black;
+  min-height: 60%;
 }
 
 .cartItems {
@@ -37,8 +51,19 @@
   font-size: 30px;
 }
 .footer {
-  /* margin-left: 10%; */
   display: grid;
   border-top: 2px solid saddlebrown;
   grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+}
+
+.order_button {
+  height: 50px;
+  background-color: orange;
+  color: red;
+  font-size: large;
+  padding: 1rem;
+  cursor: pointer;
+  border-radius: 12px;
+  width: 40%;
+  margin-left: 25%;
 }

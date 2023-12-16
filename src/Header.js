@@ -4,7 +4,7 @@ import img1 from "./images/header-food-image.jpg";
 import { cartContext } from "./App";
 import CartItemsDisplay from "./CartItemsDisplay";
 import { Link } from "react-router-dom";
-export default function Header({ setShowCartItems,setIsLoggedIn }) {
+export default function Header({ setShowCartItems, setIsLoggedIn }) {
   const { numberOfselectedItems, setNumberOfSelectedItems, selectedFood } =
     useContext(cartContext);
   // console.log(cartContext);
@@ -20,9 +20,17 @@ export default function Header({ setShowCartItems,setIsLoggedIn }) {
         />
       }
       <span className="organisation">ZOMATO</span>
-      {/* <Link to={"/"}>
-        <button onClick={setIsLoggedIn(false)}>Logout</button>
-      </Link> */}
+      <Link to={"/"}>
+        <button
+          className="cart"
+          style={{ marginRight: "50px" }}
+          onClick={() => {
+            setIsLoggedIn(false);
+          }}
+        >
+          Logout
+        </button>
+      </Link>
       <button
         className="cart"
         onClick={() => {

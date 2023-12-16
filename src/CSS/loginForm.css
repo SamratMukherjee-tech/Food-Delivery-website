@@ -11,9 +11,18 @@
 .header {
   color: white;
   font-size: 20px;
+  /* width: 100%; */
+  /* border-bottom: 1px solid white; */
+  /* margin-top: -50px; */
+  background: none;
+  /* border-top: none;
+  border-right: none;
+  border-left: none; */
+  border: none;
+  cursor: pointer;
+}
+.header:active {
   border-bottom: 1px solid white;
-  margin-top: -100px;
-  margin-left: -70px;
 }
 .label_items {
   color: white;

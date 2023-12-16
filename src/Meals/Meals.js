@@ -13,7 +13,6 @@ export default function Meals() {
     axios
       .get(url)
       .then((response) => {
-        console.log(response);
         setLoadedMeals(response.data);
       })
       .catch((err) => {

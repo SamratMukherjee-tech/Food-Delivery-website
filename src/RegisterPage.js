@@ -4,11 +4,13 @@ import HideEye from "./icons/HideEye";
 import "./CSS/loginForm.css";
 import img from "./images/loginPhoto.jpg";
 import axios from "axios";
-import { Link } from "react-router-dom";
-export default function LoginPage({ setIsLoggedIn }) {
+import { Link, useNavigate } from "react-router-dom";
+export default function RegisterPage({ setIsLoggedIn }) {
+  const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
   const [showPassword, setShowPassward] = useState(false);
+  const [mobile, setMobile] = useState("");
   const hidePassword = () => {
     setShowPassward(!showPassword);
   };
@@ -20,21 +22,22 @@ export default function LoginPage({ setIsLoggedIn }) {
   };
 
   const handleSubmit = (e) => {
-    const url = "http://localhost:4000/login";
+    const url = "http://localhost:4000/register";
     e.preventDefault();
-
+    setIsLoggedIn(false);
     axios
       .post(url, {
         userName: userName,
         password: password,
+        mobile: mobile,
       })
       .then((res) => {
         console.log("res", res);
-        if (res.data.status === "success") setIsLoggedIn(true);
       })
       .catch((err) => {
         console.log(err);
       });
+    navigate("/login");
   };
 
   return (
@@ -48,19 +51,20 @@ export default function LoginPage({ setIsLoggedIn }) {
         <div
           style={{
             display: "flex",
-            // justifyContent: "space-between",
+            justifyContent: "space-between",
             marginLeft: "-70px",
+            width: "100%",
           }}
         >
+          <Link to="/login">
+            <button className="header">SIGN IN</button>
+          </Link>
           <button
             className="header"
             style={{ borderBottom: "1px solid white" }}
           >
-            SIGN IN
+            SIGN UP
           </button>
-          <Link to="register">
-            <button className="header">SIGN UP</button>
-          </Link>
         </div>
         <div style={{ marginTop: "50px" }}>
           <label htmlFor="userName" className="label_items">
@@ -93,14 +97,27 @@ export default function LoginPage({ setIsLoggedIn }) {
               {showPassword ? <OpenEye /> : <HideEye />}
             </button>
           </div>
-
+          <label htmlFor="userName" className="label_items">
+            Mobile Number
+          </label>
+          <br />
+          <input
+            id="userName"
+            name="userName"
+            className="input_field"
+            value={mobile}
+            onChange={(e) => {
+              setMobile(e.target.value);
+            }}
+          />
+          <br />
           <div style={{}}>
             <button
               type="submit"
               className="submit_button"
               onClick={handleSubmit}
             >
-              Submit
+              Create Account
             </button>
             <button
               className="reset_button"

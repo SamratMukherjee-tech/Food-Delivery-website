@@ -51,67 +51,68 @@ export default function CartItemsDisplay({ selectedFood, setShowCartItems }) {
   }, [selectedFood]);
 
   return (
-    <div className="cartDisplay">
-      <button
-        style={{
-          position: "absolute",
-          top: 0,
-          right: 0,
-          cursor: "pointer",
-          background: "none",
-          border: "none",
-        }}
-        onClick={() => {
-          setShowCartItems(false);
-        }}
-      >
-        <Close />
-      </button>
-      <ul className="cartItems">
-        <div className="itemHeader">
-          <span>Name</span>
-          <span>Quantity</span>
-          <span>Price</span>
+    <div className="container">
+      <div className="cartDisplay">
+        <button
+          style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            cursor: "pointer",
+            background: "none",
+            border: "none",
+          }}
+          onClick={() => {
+            setShowCartItems(false);
+          }}
+        >
+          <Close />
+        </button>
+        <ul className="cartItems">
+          <div className="itemHeader">
+            <span>Name</span>
+            <span>Quantity</span>
+          </div>
+          {arr.map((item, index) => (
+            <li className="individualItems" key={index}>
+              <span className="individualItems_hover"> {item}</span>
+              <span>
+                {" "}
+                {quantity[index]}
+                <button
+                  style={{
+                    border: "none",
+                    margin: "0",
+                    cursor: "pointer",
+                    background: "none",
+                  }}
+                  onClick={() => {
+                    setQuantity((prevQuantity) => {
+                      const updatedQuantity = [...prevQuantity]; // Create a copy of the array
+                      updatedQuantity[index] = updatedQuantity[index] + 1; // Increase the value at index i
+                      return updatedQuantity; // Return the updated array
+                    });
+                    setTotalQuantity(sumQuantity);
+                    quantityPrice(index);
+                  }}
+                >
+                  <PlusIcon />
+                </button>
+              </span>
+            </li>
+          ))}
+        </ul>
+        <div className="footer">
+          <span style={{ marginLeft: "15%" }}>Total</span>
+
+          <span style={{ marginLeft: "15%" }}>{totalCost}</span>
+          {}
         </div>
-        {arr.map((item, index) => (
-          <li className="individualItems" key={index}>
-            <span className="individualItems_hover"> {item}</span>
-            <span>
-              {" "}
-              {quantity[index]}
-              <button
-                style={{
-                  border: "none",
-                  margin: "0",
-                  cursor: "pointer",
-                  background: "none",
-                }}
-                onClick={() => {
-                  setQuantity((prevQuantity) => {
-                    const updatedQuantity = [...prevQuantity]; // Create a copy of the array
-                    updatedQuantity[index] = updatedQuantity[index] + 1; // Increase the value at index i
-                    return updatedQuantity; // Return the updated array
-                  });
-                  setTotalQuantity(sumQuantity);
-                  quantityPrice(index);
-                }}
-              >
-                <PlusIcon />
-              </button>
-            </span>
-            <span>{selectedFood.get(item)}</span>
-          </li>
-        ))}
-      </ul>
-      <div className="footer">
-        <span style={{ marginLeft: "15%" }}>Total</span>
-        <span style={{ marginLeft: "15%" }}>{totalQuantity}</span>
-        <span style={{ marginLeft: "15%" }}>{totalCost}</span>
-        {}
+
+        <Link to="/congrats" style={{ width: "100%" }}>
+          <button className="order_button">Place Order</button>
+        </Link>
       </div>
-      <Link to="/congrats">
-        <button className="order_button">Place Order</button>
-      </Link>
     </div>
   );
 }
