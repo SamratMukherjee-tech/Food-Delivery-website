@@ -1,0 +1,18 @@
+.organisation {
+  font-size: 20px;
+  color: yellow;
+  margin-top: 0px;
+  margin-left: 20px;
+}
+
+.cart {
+  font-size: 100;
+  color: yellow;
+  position: fixed;
+  right: 40px;
+  top: 20px;
+  cursor: pointer;
+  background: none;
+  /* z-index: 0; */
+  border: none;
+}

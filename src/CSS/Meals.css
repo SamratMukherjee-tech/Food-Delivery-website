@@ -1,0 +1,75 @@
+.mealsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.listContainer {
+  color: white;
+  width: 70%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-gap: 10px;
+  border: 4px solid orange;
+  justify-content: center; /* Center the items horizontally */
+  align-items: center;
+  list-style: none;
+  padding: 1rem;
+}
+
+.meal-items {
+  background-color: #1d1a16;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+  color: white;
+  padding: 1rem;
+}
+.meal-items-img {
+  /* width: 90%; */
+  height: 50px;
+  width: 50px;
+}
+.meal-items-name {
+  font-size: 20px;
+}
+.meal-items-price {
+  font-size: 12px;
+  background-color: brown;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  color: yellow;
+}
+.meal-items-description {
+  font-size: 15px;
+  justify-content: center;
+  text-align: center;
+}
+.meal-items-cart {
+  font-size: 15px;
+  padding: 1px;
+  cursor: pointer;
+  background-color: rgba(245, 245, 10, 0.998);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  border-radius: 4px;
+}
+.meal-items-cart:hover {
+  font-size: 15px;
+  padding: 1px;
+  cursor: pointer;
+  color: white;
+  background-color: rgba(230, 66, 21, 0.998);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  border-radius: 4px;
+}
