@@ -3,10 +3,13 @@ import "./CSS/cart.css";
 import PlusIcon from "./icons/PlusIcon";
 import Close from "./icons/close";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useDispatch } from "react-redux";
 export default function CartItemsDisplay({ selectedFood, setShowCartItems }) {
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
   const [quantity, setQuantity] = useState([]);
   const [totalCost, setTotalCost] = useState(0);
+  const dispatch = useDispatch();
   const sumQuantity = () => {
     let sum = 0;
     quantity.forEach((x) => {
@@ -22,7 +25,7 @@ export default function CartItemsDisplay({ selectedFood, setShowCartItems }) {
   };
   const [arr, setArr] = useState([]);
   const [totalQuantity, setTotalQuantity] = useState(sumQuantity);
-
+  const [name, setName] = useState("");
   const [price, setPrice] = useState([]);
 
   useEffect(() => {
@@ -49,6 +52,18 @@ export default function CartItemsDisplay({ selectedFood, setShowCartItems }) {
     console.log("Updated arr:", selectedFood);
     setTotalQuantity(foodNames.length);
   }, [selectedFood]);
+
+  useEffect(() => {
+    const url = "http://localhost:4000/congrats";
+    axios
+      .post(url, {})
+      .then((res) => {
+        setName(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <div className="container">
@@ -109,9 +124,24 @@ export default function CartItemsDisplay({ selectedFood, setShowCartItems }) {
           {}
         </div>
 
-        <Link to="/congrats" style={{ width: "100%" }}>
-          <button className="order_button">Place Order</button>
-        </Link>
+        <button
+          className="order_button"
+          onClick={() => {
+            if (totalCost > 0 && name !== "") {
+              dispatch({ type: "SET_NAME", name });
+              navigate("/congrats");
+            } else {
+              if (name === "") {
+                const userConfirm = window.confirm(
+                  "Login before you place an order"
+                );
+                if (userConfirm) navigate("/login");
+              } else alert("No items selected");
+            }
+          }}
+        >
+          Place Order
+        </button>
       </div>
     </div>
   );

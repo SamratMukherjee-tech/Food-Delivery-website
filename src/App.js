@@ -44,7 +44,10 @@ function App() {
             path="/register"
             element={<RegisterPage setIsLoggedIn={setIsLoggedIn} />}
           />
-          <Route path="/congrats" element={<Congratulations />} />
+          <Route
+            path="/congrats"
+            element={<Congratulations setShowCartItems={setShowCartItems} />}
+          />
           <Route path="/" element={!isLoggedIn && <Navigate to="/login" />} />
           <Route
             path="/home"

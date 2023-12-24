@@ -34,6 +34,7 @@ export default function LoginPage({ setIsLoggedIn }) {
       })
       .catch((err) => {
         console.log(err);
+        alert("invalid username or password");
       });
   };
 

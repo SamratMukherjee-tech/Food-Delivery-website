@@ -4,11 +4,13 @@ import img1 from "./images/header-food-image.jpg";
 import { cartContext } from "./App";
 import CartItemsDisplay from "./CartItemsDisplay";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 export default function Header({ setShowCartItems, setIsLoggedIn }) {
   const { numberOfselectedItems, setNumberOfSelectedItems, selectedFood } =
     useContext(cartContext);
-  // console.log(cartContext);
+
   const [isClicked, setIsClicked] = useState(false);
+  const dispatch = useDispatch();
   return (
     <div>
       {
@@ -20,12 +22,16 @@ export default function Header({ setShowCartItems, setIsLoggedIn }) {
         />
       }
       <span className="organisation">ZOMATO</span>
+
       <Link to={"/"}>
         <button
           className="cart"
           style={{ marginRight: "50px" }}
           onClick={() => {
+            dispatch({ type: "SET_NAME", name: "" });
             setIsLoggedIn(false);
+            setNumberOfSelectedItems(0);
+            selectedFood.clear();
           }}
         >
           Logout
