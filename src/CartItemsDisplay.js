@@ -5,11 +5,19 @@ import Close from "./icons/close";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-export default function CartItemsDisplay({ selectedFood, setShowCartItems }) {
+import { Cookies } from "react-cookie";
+import img1 from "./images/cart_image.jpg";
+export default function CartItemsDisplay({
+  selectedFood,
+  setShowCartItems,
+  mealsStrored,
+}) {
+  const cookie = new Cookies();
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState([]);
   const [totalCost, setTotalCost] = useState(0);
   const dispatch = useDispatch();
+  const [orders, setOrders] = useState([]);
   const sumQuantity = () => {
     let sum = 0;
     quantity.forEach((x) => {
@@ -29,6 +37,13 @@ export default function CartItemsDisplay({ selectedFood, setShowCartItems }) {
   const [price, setPrice] = useState([]);
 
   useEffect(() => {
+    axios
+      .get("http://localhost:4000/getOrdersDetails")
+      .then((res) => {
+        setOrders(res.data.orders);
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
     const foodNames = Array.from(selectedFood.keys());
     const foodPrices = Array.from(selectedFood.values());
     console.log(selectedFood);
@@ -55,8 +70,17 @@ export default function CartItemsDisplay({ selectedFood, setShowCartItems }) {
 
   useEffect(() => {
     const url = "http://localhost:4000/congrats";
+    const token = cookie.get("token");
     axios
-      .post(url, {})
+      .post(
+        url,
+        {},
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
       .then((res) => {
         setName(res.data);
       })
@@ -67,53 +91,53 @@ export default function CartItemsDisplay({ selectedFood, setShowCartItems }) {
 
   return (
     <div className="container">
+      <div className="cartImage">
+        <img src={img1} />
+      </div>
+
       <div className="cartDisplay">
-        <button
-          style={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            cursor: "pointer",
-            background: "none",
-            border: "none",
-          }}
-          onClick={() => {
-            setShowCartItems(false);
-          }}
-        >
-          <Close />
-        </button>
         <ul className="cartItems">
-          <div className="itemHeader">
-            <span>Name</span>
-            <span>Quantity</span>
-          </div>
-          {arr.map((item, index) => (
-            <li className="individualItems" key={index}>
-              <span className="individualItems_hover"> {item}</span>
-              <span>
-                {" "}
-                {quantity[index]}
+          <div className="itemHeader"></div>
+          {orders.map((item) => (
+            <li className="individualItems" key={item.id}>
+              <div>
+                <img src={item.img} alt={item.name} height={100} width={100} />
+              </div>
+              <div className="individualItems_hover"> {item.name}</div>
+              <div className="quantity_and_price">
+                <span
+                  style={{
+                    marginLeft: "10px",
+                    fontSize: "20px",
+                  }}
+                >
+                  {item.quantity}
+                  {/* {quantity[index]} */}
+                </span>
+
                 <button
                   style={{
                     border: "none",
-                    margin: "0",
                     cursor: "pointer",
                     background: "none",
+                    marginLeft: "100px",
                   }}
-                  onClick={() => {
-                    setQuantity((prevQuantity) => {
-                      const updatedQuantity = [...prevQuantity]; // Create a copy of the array
-                      updatedQuantity[index] = updatedQuantity[index] + 1; // Increase the value at index i
-                      return updatedQuantity; // Return the updated array
-                    });
-                    setTotalQuantity(sumQuantity);
-                    quantityPrice(index);
-                  }}
+                  // onClick={() => {
+                  //   setQuantity((prevQuantity) => {
+                  //     const updatedQuantity = [...prevQuantity]; // Create a copy of the array
+                  //     updatedQuantity[index] = updatedQuantity[index] + 1; // Increase the value at index i
+                  //     return updatedQuantity; // Return the updated array
+                  //   });
+                  //   setTotalQuantity(sumQuantity);
+                  //   quantityPrice(index);
+                  // }}
                 >
                   <PlusIcon />
                 </button>
-              </span>
+              </div>
+              <div style={{ marginLeft: "150px", marginTop: "60px" }}>
+                {`Rs.${item.price}`}
+              </div>
             </li>
           ))}
         </ul>

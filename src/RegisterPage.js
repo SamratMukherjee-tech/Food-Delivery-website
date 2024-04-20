@@ -5,7 +5,9 @@ import "./CSS/loginForm.css";
 import img from "./images/loginPhoto.jpg";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { Cookies } from "react-cookie";
 export default function RegisterPage({ setIsLoggedIn }) {
+  const cookie = new Cookies();
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
@@ -33,6 +35,7 @@ export default function RegisterPage({ setIsLoggedIn }) {
       })
       .then((res) => {
         console.log("res", res);
+        cookie.set("token", res.data.token);
       })
       .catch((err) => {
         console.log(err);

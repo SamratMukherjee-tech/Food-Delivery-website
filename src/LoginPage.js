@@ -5,10 +5,13 @@ import "./CSS/loginForm.css";
 import img from "./images/loginPhoto.jpg";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { Cookies } from "react-cookie";
 export default function LoginPage({ setIsLoggedIn }) {
+  const cookie = new Cookies();
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
   const [showPassword, setShowPassward] = useState(false);
+  const token = cookie.get("token");
   const hidePassword = () => {
     setShowPassward(!showPassword);
   };
@@ -20,21 +23,30 @@ export default function LoginPage({ setIsLoggedIn }) {
   };
 
   const handleSubmit = (e) => {
+    console.log("token is:", token);
+
     const url = "http://localhost:4000/login";
     e.preventDefault();
 
     axios
-      .post(url, {
-        userName: userName,
-        password: password,
-      })
+      .post(
+        url,
+        {
+          userName: userName,
+          password: password,
+        }
+        // { headers: { Authorization: token } }
+      )
       .then((res) => {
-        console.log("res", res);
-        if (res.data.status === "success") setIsLoggedIn(true);
+        if (res.status === 200) {
+          setIsLoggedIn(true);
+          console.log("res", res);
+          cookie.set("token", res.data.token);
+        }
       })
       .catch((err) => {
         console.log(err);
-        alert("invalid username or password");
+        alert(err.response.data.msg);
       });
   };
 

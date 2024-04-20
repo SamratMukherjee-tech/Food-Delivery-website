@@ -3,14 +3,16 @@ import React from "react";
 export default function PlusIcon() {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="12"
-      height="12"
-      fill="green"
-      class="bi bi-plus-square-fill"
-      viewBox="0 0 16 16"
+      viewBox="0 0 1024 1024"
+      fill="currentColor"
+      height="1.5em"
+      width="1.5em"
     >
-      <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0" />
+      <defs>
+        <style />
+      </defs>
+      <path d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z" />
+      <path d="M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z" />
     </svg>
   );
 }

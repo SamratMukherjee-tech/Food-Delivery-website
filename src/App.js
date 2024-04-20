@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import Header from "./Header";
 import Meals from "./Meals/Meals";
 import CartItemsDisplay from "./CartItemsDisplay";
@@ -12,6 +12,8 @@ import {
 import Congratulations from "./Congratulations";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
+import { Cookies } from "react-cookie";
+import axios from "axios";
 
 const selectedFood = new Map();
 const cartContext = createContext();
@@ -19,6 +21,21 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [numberOfselectedItems, setNumberOfSelectedItems] = useState(0);
   const [showCartItems, setShowCartItems] = useState(false);
+  const [mealsStrored, setMealsStored] = useState([]);
+  const cookie = new Cookies();
+  useEffect(() => {
+    const url = "http://localhost:4000/home";
+    const token = cookie.get("token");
+    axios
+      .get(url, { headers: { Authorization: token } })
+      .then((res) => {
+        res.status === 200 ? setIsLoggedIn(true) : alert("unauthorized");
+        console.log("you login status is", isLoggedIn, res.status);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <Router>
@@ -48,6 +65,20 @@ function App() {
             path="/congrats"
             element={<Congratulations setShowCartItems={setShowCartItems} />}
           />
+
+          <Route
+            path="/Cart"
+            element={
+              isLoggedIn && (
+                <CartItemsDisplay
+                  selectedFood={selectedFood}
+                  setShowCartItems={setShowCartItems}
+                  mealsStrored={mealsStrored}
+                />
+              )
+            }
+          />
+
           <Route path="/" element={!isLoggedIn && <Navigate to="/login" />} />
           <Route
             path="/home"
@@ -60,18 +91,18 @@ function App() {
                   flexDirection: "column",
                 }}
               >
-                {showCartItems && (
+                {/* {showCartItems && (
                   <CartItemsDisplay
                     selectedFood={selectedFood}
                     setShowCartItems={setShowCartItems}
                   />
-                )}
+                )} */}
                 <Header
                   setShowCartItems={setShowCartItems}
                   setIsLoggedIn={setIsLoggedIn}
                 />
                 {/* {!showCartItems && <Meals />} */}
-                <Meals />
+                <Meals setMealsStored={setMealsStored} />
               </div>
             }
           />

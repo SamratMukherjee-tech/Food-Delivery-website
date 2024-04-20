@@ -1,16 +1,34 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./CSS/Header.css";
 import img1 from "./images/header-food-image.jpg";
 import { cartContext } from "./App";
 import CartItemsDisplay from "./CartItemsDisplay";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { Cookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 export default function Header({ setShowCartItems, setIsLoggedIn }) {
+  const cookie = new Cookies();
   const { numberOfselectedItems, setNumberOfSelectedItems, selectedFood } =
     useContext(cartContext);
-
-  const [isClicked, setIsClicked] = useState(false);
+  const [numberofOrders, setNumberOfOrders] = useState(0);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const url = "http://localhost:4000/getOrders";
+    axios
+      .get(url)
+      .then((res) => {
+        console.log("the number of orders are:", res);
+        setNumberOfOrders(res.data.numOrders);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+
   return (
     <div>
       {
@@ -32,6 +50,7 @@ export default function Header({ setShowCartItems, setIsLoggedIn }) {
             setIsLoggedIn(false);
             setNumberOfSelectedItems(0);
             selectedFood.clear();
+            cookie.remove("token");
           }}
         >
           Logout
@@ -40,10 +59,11 @@ export default function Header({ setShowCartItems, setIsLoggedIn }) {
       <button
         className="cart"
         onClick={() => {
+          navigate("/Cart");
           setShowCartItems(true);
         }}
       >
-        cart({numberOfselectedItems})
+        cart({numberofOrders})
       </button>
     </div>
   );
