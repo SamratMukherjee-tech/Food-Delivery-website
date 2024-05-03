@@ -6,7 +6,12 @@ const bodyParser = require("body-parser");
 const { createPool } = require("mysql");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
-const { getToken, checkOccurance, addQuantity } = require("./utils");
+const {
+  getToken,
+  checkOccurance,
+  addQuantity,
+  updateQuantity,
+} = require("./utils");
 
 let loggedUserName = "";
 const mongoURL =
@@ -166,6 +171,27 @@ app.get("/getOrdersDetails", async (req, res) => {
     msg: "having other orders ",
     orders: result["orders"],
   });
+});
+
+app.post("/addQuantity", async (req, res) => {
+  const meal = req.body.meal;
+  const result = await Food.findOne({ name: loggedUserName });
+  const newQuanity = await updateQuantity(meal.id, result["orders"]);
+  console.log("newQuanity", newQuanity);
+  try {
+    const updatedResult = await Food.updateOne(
+      { name: loggedUserName, "orders.id": meal.id },
+      { $set: { "orders.$.quantity": newQuanity } }
+    );
+    const newResult = await Food.findOne({ name: loggedUserName });
+    console.log("updated results", newResult);
+    return res.status(200).json({ orders: newResult["orders"] });
+  } catch (err) {
+    console.log("error while updating", err);
+  }
+  // console.log("updatedResults", updatedResult);
+  return res.status(400);
+  // .json({ msg: "updated the orders ", orders: updatedResult["orders"] });
 });
 
 app.listen(port, () => {
